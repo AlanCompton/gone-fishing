@@ -8,23 +8,23 @@ for(let i = 6;i < 12;i++){
     console.log(`The time is ${i}:00am. So far you've caught: `);
 
 
-console.log(`${caughtFish.length} fish, ${getTotalWeight()} lbs, $${getTotalPrice()}`);
+console.log(`${caughtFish.length} fish, ${getTotalWeight()} lbs, $${getTotalValue()}`);
 
 let fish = generateRandomFish();
-
-console.log(`You caught a ${fish.name} weighing ${fish.weight} lbs and valued at $${fish.price}`);
-console.log("\nYour action: [c]atch or [r]elease");
-
-let action = prompt(`> `);
 let currentTotalWeight = getTotalWeight();
 
+console.log(`You caught a ${fish.name} weighing ${fish.weight} lbs and valued at $${fish.value}`);
+
 if(currentTotalWeight + fish.weight > 10){
-    console.log(`Your fish was too heavy and broke your line. You are now sad.`);
+    console.log(`\nYour fish was too heavy and broke your line. You are now sad.\n`);
     console.log(`Enter any key to continue fishing!`);
     prompt(`> `);
 
     continue;
 }
+
+console.log("\nYour action: [c]atch or [r]elease");
+let action = prompt('> ');
 
 while(action !== 'c' && action !== 'r'){
     console.log(`Please enter [c] or [r]`);
@@ -39,45 +39,47 @@ if(action === 'c'){
 }
 }
 
-function randomWeight(){
-    let weight = Number(Math.random()*5).toPrecision(3);
+function generateRandomWeight(){
+    let weight = Number((Math.random()*5).toPrecision(3));
 
     while(weight < 1){
-        weight = Number(Math.random()*5).toPrecision(3);
+        weight = Number((Math.random()*5).toPrecision(3));
     }
 
     return weight;
 }
 
-function randomPrice(){
-    let price = Number(Math.random()*13).toPrecision(3);
+function generateRandomValue(){
+    let value = Number((Math.random()*5).toPrecision(3));
 
-    while(price < 2){
-        price = Number(Math.random()*13).toPrecision(3);
+    while(value < 0.1){
+        value = Number((Math.random()*5).toPrecision(3));
     }
-
-    return price;
+    if(value < 1){
+        value = Number(value.toPrecision(2));
+    }
+    return value;
 }
 
-function randomName(){
-    let fishType = ["Bass","Trout","Gill","Catfish","Herring","Salmon","Snapper","Grouper","Cod","Tuna","Blobfish","Blowfish"];
-    let adjective = ["Shiny","Red","Blue","Slimy","Yellow","Dirty","Purple","Vibrant","Clammy","Floppy","Sandy","Frail","Sickly"];
-    let adjective1 = adjective[Math.floor(Math.random()*adjective.length)];
-    let adjective2 = adjective[Math.floor(Math.random()*adjective.length)];
-    let fishType1 = fishType[Math.floor(Math.random()*fishType.length)];
+function generateRandomName(){
+    let types = ["Bass","Trout","Gill","Catfish","Herring","Salmon","Snapper","Grouper","Cod","Tuna","Blobfish","Blowfish"];
+    let adjectives = ["Shiny","Red","Blue","Slimy","Yellow","Dirty","Purple","Vibrant","Clammy","Floppy","Sandy","Frail","Sickly"];
+    let adj1 = adjectives[Math.floor(Math.random()*adjectives.length)];
+    let adj2 = adjectives[Math.floor(Math.random()*adjectives.length)];
+    let fishType1 = types[Math.floor(Math.random()*types.length)];
 
-    while(adjective1 === adjective2){
-        adjective2 = adjective[Math.floor(Math.random()*adjective.length)];
+    while(adj1 === adj2){
+        adj2 = adjectives[Math.floor(Math.random()*adjectives.length)];
     }
 
-    return adjective1 + " " + adjective2 + " " + fishType1;
+    return adj1 + " " + adj2 + " " + fishType1;
 }
 
 function generateRandomFish(){
     let fish = {};
-    fish.name = randomName();
-    fish.weight = randomWeight();
-    fish.price = randomPrice();
+    fish.name = generateRandomName();
+    fish.weight = generateRandomWeight()  ; 
+    fish.value = generateRandomValue();
 
     return fish;
 }
@@ -92,11 +94,11 @@ function getTotalWeight(){
     return Number(totalWeight.toPrecision(3));
 }
 
-function getTotalPrice(){
-    let totalPrice = 0;
+function getTotalValue(){
+    let totalValue = 0;
 
     for(let fish of caughtFish){
-        totalPrice = totalPrice + fish.price;
+        totalValue = totalValue + fish.value;
     }
-    return Number(totalPrice.toPrecision(3));
+    return Number(totalValue.toPrecision(3));
 }
